@@ -26,18 +26,3 @@ export function Logo({ light = false }: { light?: boolean }) {
     </Link>
   );
 }
-
-export function VerticalLogo({ className = '' }: { className?: string }) {
-  return (
-    <Link href="/" aria-label="Tide & Trail home" className={className}>
-      <Image
-        src="/assets/logos/tide-trail-vertical.png"
-        alt="Tide & Trail — Good Gear. Another Adventure."
-        width={256}
-        height={442}
-        priority
-        className="h-auto w-full"
-      />
-    </Link>
-  );
-}
