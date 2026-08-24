@@ -27,4 +27,3 @@ npm start
 ```
 
 The forms and marketplace are intentionally prototype-level UI. Connect them to Supabase/Stripe/your preferred backend for production inventory, authentication, consignment workflow, rentals and event RSVPs.
-# tide-and-trail
