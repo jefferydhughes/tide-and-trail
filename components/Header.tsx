@@ -1,3 +1,18 @@
-'use client'
-import Link from 'next/link'; import {useState} from 'react'; import {Menu,X} from 'lucide-react'
-export default function Header(){const[open,setOpen]=useState(false);return <header className="sticky top-0 z-50 border-b border-black/10 bg-[#F4F0E6]/95 backdrop-blur"><div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4"><Link href="/" className="text-xl font-black text-[#163C38]">TIDE & TRAIL<span className="text-[#C96D3A]">.</span></Link><nav className="hidden items-center gap-7 text-sm font-bold md:flex"><Link href="/shop">Shop</Link><Link href="/sell">Sell Your Gear</Link><Link href="/rent">Rent</Link><Link href="/community">Community</Link><Link href="/repair">Repair</Link></nav><Link href="/drop" className="hidden rounded-full bg-[#C96D3A] px-5 py-2.5 text-sm font-black text-white md:block">Fresh Drop Tuesday →</Link><button className="md:hidden" onClick={()=>setOpen(!open)}>{open?<X/>:<Menu/>}</button></div>{open&&<div className="border-t border-black/10 px-5 py-5 md:hidden"><div className="flex flex-col gap-4 font-bold"><Link href="/shop">Shop</Link><Link href="/sell">Sell Your Gear</Link><Link href="/rent">Rent</Link><Link href="/community">Community</Link><Link href="/repair">Repair</Link><Link href="/drop">Fresh Drop Tuesday</Link></div></div>}</header>}
+'use client';
+import {Menu, Search, X} from 'lucide-react';
+import Link from 'next/link';
+import {useState} from 'react';
+import {Logo} from './Logo';
+
+const links=[['Shop Gear','/shop'],['Rent','/rent'],['Sell Gear','/sell'],['Community','/community'],['Fresh Drop','/drop'],['Repair','/repair']];
+export function Header(){
+ const [open,setOpen]=useState(false);
+ return <header className="sticky top-0 z-50 border-b border-forest/10 bg-fog/95 backdrop-blur">
+  <div className="container-x flex h-[74px] items-center justify-between gap-6"><Logo/>
+   <nav className="hidden items-center gap-6 lg:flex">{links.map(([label,href])=><Link key={href} href={href} className="text-sm font-bold text-forest/75 hover:text-forest">{label}</Link>)}</nav>
+   <div className="hidden items-center gap-2 sm:flex"><Link href="/shop" className="btn-ghost"><Search size={16}/> Find gear</Link><Link href="/community" className="btn-primary">Find your people</Link></div>
+   <button onClick={()=>setOpen(!open)} className="grid h-11 w-11 place-items-center rounded-full border border-forest/15 bg-white lg:hidden" aria-label="Menu">{open?<X/>:<Menu/>}</button>
+  </div>
+  {open && <div className="border-t border-forest/10 bg-fog lg:hidden"><div className="container-x flex flex-col gap-1 py-4">{links.map(([label,href])=><Link onClick={()=>setOpen(false)} key={href} href={href} className="rounded-2xl px-4 py-3 font-bold text-forest hover:bg-white">{label}</Link>)}<Link onClick={()=>setOpen(false)} href="/community" className="btn-primary mt-2">Find your people</Link></div></div>}
+ </header>
+}

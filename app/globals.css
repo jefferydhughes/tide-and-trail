@@ -1,2 +1,18 @@
-@tailwind base;@tailwind components;@tailwind utilities;
-html{scroll-behavior:smooth}body{margin:0;background:#F4F0E6;color:#18302D}*{box-sizing:border-box}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: light; }
+html { scroll-behavior: smooth; }
+body { margin:0; background:#f7f5ef; color:#15231F; font-family:Arial,Helvetica,sans-serif; }
+::selection { background:#D9C8A5; color:#18352C; }
+.container-x { width:min(1180px,calc(100% - 40px)); margin-inline:auto; }
+.display { font-family:Georgia,'Times New Roman',serif; letter-spacing:-.035em; }
+.noise { background-image: radial-gradient(rgba(24,53,44,.055) 1px,transparent 1px); background-size:6px 6px; }
+.topo { background-image: repeating-radial-gradient(ellipse at 40% 20%, transparent 0 18px, rgba(217,200,165,.18) 19px 20px, transparent 21px 38px); }
+.card { @apply rounded-3xl border border-forest/10 bg-white shadow-soft; }
+.btn { @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold transition hover:-translate-y-0.5; }
+.btn-primary { @apply btn bg-forest text-white hover:bg-fundy; }
+.btn-secondary { @apply btn bg-sand text-forest hover:bg-white; }
+.btn-ghost { @apply btn border border-forest/15 bg-white/70 text-forest hover:bg-white; }
+.pill { @apply rounded-full border border-forest/10 bg-white px-3 py-1 text-xs font-bold uppercase tracking-[.14em] text-forest; }

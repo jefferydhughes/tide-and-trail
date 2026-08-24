@@ -1,1 +1,21 @@
-export default function ProductCard({name,price,grade,activity,img}:{name:string,price:string,grade:string,activity:string,img?:string}){return <article className="group overflow-hidden rounded-2xl bg-white"><div className="aspect-[4/3] overflow-hidden bg-[#DCEBE6]">{img?<img src={img} alt="" className="h-full w-full object-cover transition duration-500 group-hover:scale-105"/>:<div className="flex h-full items-center justify-center text-5xl">⛰️</div>}</div><div className="p-4"><div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-black/50"><span>{activity}</span><span>{grade}</span></div><h3 className="mt-2 font-bold">{name}</h3><div className="mt-3 text-xl font-black">${price}</div></div></article>}
+import Image from 'next/image';
+import {MapPin, Heart} from 'lucide-react';
+export type Product={name:string,brand:string,price:string,condition:string,category:string,location:string,image?:string,alt?:string};
+
+export function ProductCard({p}:{p:Product,i?:number}){
+  return <article className="group overflow-hidden rounded-3xl border border-forest/10 bg-white shadow-soft">
+    <div className="relative aspect-[4/3] overflow-hidden bg-fog">
+      {p.image ? <Image src={p.image} alt={p.alt || p.name} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" className="object-cover transition duration-500 group-hover:scale-105" /> : <div className="absolute inset-0 bg-fundy topo" />}
+      <div className="absolute inset-0 bg-gradient-to-t from-forest/80 via-transparent to-transparent" />
+      <button className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-white/90 text-forest" aria-label="Save item"><Heart size={17}/></button>
+      <div className="absolute bottom-5 left-5 right-5">
+        <span className="rounded-full bg-white/90 px-3 py-1 text-[10px] font-black uppercase tracking-[.16em] text-forest">{p.category}</span>
+        <div className="display mt-3 text-3xl text-white">{p.brand}</div>
+      </div>
+    </div>
+    <div className="p-5">
+      <div className="flex justify-between gap-4"><div><h3 className="font-black text-forest">{p.name}</h3><p className="mt-1 text-xs text-forest/50">{p.condition} · {p.location}</p></div><div className="text-lg font-black text-rust">{p.price}</div></div>
+      <div className="mt-5 flex items-center gap-2 text-xs text-forest/55"><MapPin size={13}/> Moncton pickup available</div>
+    </div>
+  </article>
+}
