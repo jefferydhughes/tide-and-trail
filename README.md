@@ -1,46 +1,10 @@
-# Tide & Trail
+# Tide & Trail — Business Model Redesign
 
-A complete Next.js + Tailwind prototype for a community-first outdoor consignment marketplace in Moncton, NB.
+This version reorganizes the site around the validated business model:
+Fresh Drop Tuesday + live selling, shop by adventure, photo-first consignment, cash vs. Tide & Trail credit, Fundy Footpath rentals, Hush Hush community, Adventure Board, and repair.
 
-## Included
-- Home / brand landing page
-- Searchable gear marketplace with category filters
-- Fundy Footpath rental page
-- Consignment intake page
-- Community / Hush Hush events / adventure board
-- Repair Studio coming-soon page
-- Responsive navigation + footer
-- Tide & Trail visual identity system in CSS/SVG
-- Brand board and Hush Hush reference images in `public/images`
+## Add your existing assets
+Copy your current `public/assets` folder into this project's `public/assets` folder. Existing references include `/assets/photography/...`.
 
-## Run locally
-```bash
-npm install
-npm run dev
-```
-Then open http://localhost:3000.
-
-## Production
-```bash
-npm run build
-npm start
-```
-
-The forms and marketplace are intentionally prototype-level UI. Connect them to Supabase/Stripe/your preferred backend for production inventory, authentication, consignment workflow, rentals and event RSVPs.
-
-## Brand assets
-
-The production logo PNGs live in `public/assets/logos/`:
-
-- `tide-trail-horizontal.png` — primary horizontal lockup
-- `tide-trail-vertical.png` — stacked/vertical lockup
-
-They are referenced through `/assets/logos/...` so Next.js/Vercel serves them as static public assets.
-
-## Assets
-The site now uses local assets under `public/assets/`. Logo files live in `public/assets/logos/` and photography in `public/assets/photography/`.
-
-No external image host or `next.config` remote image configuration is required.
-
-## Vercel
-Set the Vercel Root Directory to the folder containing `package.json`, `app/`, `components/`, `public/`, and `tsconfig.json`.
+## Deploy
+Repository root should contain `app`, `components`, `public`, `package.json`, and `tsconfig.json`.

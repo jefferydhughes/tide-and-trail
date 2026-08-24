@@ -1,8 +1,1 @@
-{
-  "name": "tide-and-trail",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {"dev":"next dev","build":"next build","start":"next start","lint":"next lint"},
-  "dependencies": {"lucide-react":"^0.468.0","next":"^15.5.0","react":"^19.1.0","react-dom":"^19.1.0"},
-  "devDependencies": {"@types/node":"^22.0.0","@types/react":"^19.0.0","@types/react-dom":"^19.0.0","autoprefixer":"^10.4.20","postcss":"^8.4.49","tailwindcss":"^3.4.17","typescript":"^5.7.2"}
-}
+{"name":"tide-trail","version":"1.0.0","private":true,"scripts":{"dev":"next dev","build":"next build","start":"next start"},"dependencies":{"next":"^14.2.0","react":"^18.3.0","react-dom":"^18.3.0","lucide-react":"^0.468.0"},"devDependencies":{"@types/node":"^20.14.0","@types/react":"^18.3.0","@types/react-dom":"^18.3.0","autoprefixer":"^10.4.20","postcss":"^8.4.41","tailwindcss":"^3.4.10","typescript":"^5.5.4"}}
