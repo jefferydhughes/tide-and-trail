@@ -1,1 +1,28 @@
-export function HeroArt(){return <div className="relative aspect-[4/3] overflow-hidden rounded-[2.5rem] bg-fundy"><div className="absolute inset-0 opacity-40 topo"/><div className="absolute -right-16 -top-16 h-72 w-72 rounded-full bg-sand/30 blur-2xl"/><div className="absolute bottom-[-12%] left-[-5%] h-[70%] w-[110%] rounded-[50%] border-[2px] border-sand/60 rotate-[-8deg]"/><div className="absolute bottom-[-5%] left-[-8%] h-[55%] w-[110%] rounded-[50%] border-[2px] border-sand/40 rotate-[-8deg]"/><div className="absolute left-[12%] top-[13%] text-sand"><svg viewBox="0 0 220 160" className="w-48 sm:w-64" fill="none" stroke="currentColor"><path strokeWidth="5" d="M8 107c26-38 49 32 75-1s49 32 91-8"/><path strokeWidth="3" d="M14 126c26-38 49 32 75-1s49 32 91-8" opacity=".65"/><path strokeWidth="3" d="M48 70c20-21 34-42 64-52 14 13 21 31 19 50-28-12-51-9-83 2Z" opacity=".65"/></svg></div><div className="absolute bottom-8 left-8 right-8 flex items-end justify-between text-white"><div><div className="text-xs font-bold uppercase tracking-[.25em] text-sand">Bay of Fundy / NB</div><div className="display mt-2 text-4xl sm:text-5xl">Go find<br/>your people.</div></div><div className="hidden text-right sm:block"><div className="text-xs uppercase tracking-[.2em] text-white/60">Tide & Trail</div><div className="mt-1 text-sm font-bold">Good gear. Another adventure.</div></div></div></div>}
+import Image from 'next/image';
+
+export function HeroArt() {
+  return (
+    <div className="relative aspect-[4/3] overflow-hidden rounded-[2.5rem] bg-fundy shadow-soft">
+      <Image
+        src="/assets/photography/fundy-coast.jpg"
+        alt="The Bay of Fundy coastline at golden hour"
+        fill
+        priority
+        sizes="(max-width: 1024px) 100vw, 50vw"
+        className="object-cover"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-forest/90 via-forest/10 to-transparent" />
+      <div className="absolute inset-0 opacity-25 topo" />
+      <div className="absolute bottom-8 left-8 right-8 flex items-end justify-between text-white">
+        <div>
+          <div className="text-xs font-bold uppercase tracking-[.25em] text-sand">Bay of Fundy / NB</div>
+          <div className="display mt-2 text-4xl sm:text-5xl">Go find<br />your people.</div>
+        </div>
+        <div className="hidden max-w-[210px] text-right sm:block">
+          <div className="text-xs uppercase tracking-[.2em] text-white/70">Tide & Trail</div>
+          <div className="mt-1 text-sm font-bold text-white">Good gear. Another adventure.</div>
+        </div>
+      </div>
+    </div>
+  );
+}

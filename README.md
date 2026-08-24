@@ -27,3 +27,20 @@ npm start
 ```
 
 The forms and marketplace are intentionally prototype-level UI. Connect them to Supabase/Stripe/your preferred backend for production inventory, authentication, consignment workflow, rentals and event RSVPs.
+
+## Brand assets
+
+The production logo PNGs live in `public/assets/logos/`:
+
+- `tide-trail-horizontal.png` — primary horizontal lockup
+- `tide-trail-vertical.png` — stacked/vertical lockup
+
+They are referenced through `/assets/logos/...` so Next.js/Vercel serves them as static public assets.
+
+## Assets
+The site now uses local assets under `public/assets/`. Logo files live in `public/assets/logos/` and photography in `public/assets/photography/`.
+
+No external image host or `next.config` remote image configuration is required.
+
+## Vercel
+Set the Vercel Root Directory to the folder containing `package.json`, `app/`, `components/`, `public/`, and `tsconfig.json`.
