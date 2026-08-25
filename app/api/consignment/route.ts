@@ -33,6 +33,7 @@ export async function POST(request: Request) {
       brand: String(form.get('brand') || '').trim() || null,
       category: String(form.get('category') || '').trim() || null,
       condition: String(form.get('condition') || '').trim() || null,
+      adventure_story: String(form.get('adventureStory') || '').trim() || null,
       description: String(form.get('description') || '').trim() || null,
       estimated_purchase_price: Number(form.get('purchasePrice')) || null,
       preferred_payout: String(form.get('payout') || 'cash'),

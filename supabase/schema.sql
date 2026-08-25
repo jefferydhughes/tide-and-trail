@@ -66,6 +66,10 @@ create table if not exists public.event_signups (
   unique(event_id,email)
 );
 
+-- Consignment story: the adventures this piece of gear has already been on.
+alter table public.consignment_submissions
+  add column if not exists adventure_story text;
+
 -- Private storage bucket for submitted consignment photos.
 insert into storage.buckets (id, name, public)
 values ('consignment-photos','consignment-photos',false)
