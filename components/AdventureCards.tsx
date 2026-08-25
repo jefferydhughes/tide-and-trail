@@ -3,7 +3,7 @@ import Link from 'next/link';
 import {ArrowUpRight, Coffee, Footprints, Users} from 'lucide-react';
 
 const cards = [
-  {tag:'Nomad's Cafe', title:'Sunrise coffee hike', meta:'Saturday · 7–10 AM · 36 spots', text:'The trailhead stays secret until the coordinates drop. We bring the coffee. You bring a mug.', icon:Coffee, href:'/community', image:'/assets/photography/hush-hush-wide.jpg', alt:'Hush Hush community coffee hike poster'},
+  {tag:'Nomads Cafe', title:'Sunrise coffee hike', meta:'Saturday · 7–10 AM · 36 spots', text:'The trailhead stays secret until the coordinates drop. We bring the coffee. You bring a mug.', icon:Coffee, href:'/community', image:'/assets/photography/hush-hush-wide.jpg', alt:'Hush Hush community coffee hike poster'},
   {tag:'FOOTPATH', title:'The 4-day kit', meta:'Rent · 3–5 days · Moncton pickup', text:'A lightweight, trail-ready kit for people passing through to walk the Fundy Footpath.', icon:Footprints, href:'/rent', image:'/assets/photography/fundy-hiker.jpg', alt:'Hiker overlooking the Fundy coast'},
   {tag:'FIND YOUR PEOPLE', title:'Adventure board', meta:'Looking for company?', text:'Share a hike, find a paddle buddy, join a group or simply say hello.', icon:Users, href:'/community#board', image:'/assets/photography/fundy-forest.jpg', alt:'Forest trail in Atlantic Canada'}
 ];
