@@ -38,6 +38,7 @@ export async function POST(request: Request) {
       estimated_purchase_price: Number(form.get('purchasePrice')) || null,
       preferred_payout: String(form.get('payout') || 'cash'),
       pickup_postal_code: String(form.get('postalCode') || '').trim() || null,
+      adventure_partner_id: String(form.get('adventurePartnerId') || '').trim() || null,
       photo_paths: photoPaths,
     })
     if (error) throw error

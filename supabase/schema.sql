@@ -15,6 +15,7 @@ create table if not exists public.consignment_submissions (
   estimated_purchase_price numeric,
   preferred_payout text not null default 'cash',
   pickup_postal_code text,
+  adventure_partner_id text,
   photo_paths text[] not null default '{}',
   status text not null default 'new' check (status in ('new','reviewing','accepted','rejected','sold','paid'))
 );
