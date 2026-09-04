@@ -7,3 +7,6 @@ env.local
 .DS_Store
 npm-debug.log*
 .gstack/
+test-results/
+playwright-report/
+tsconfig.tsbuildinfo
