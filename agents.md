@@ -20,11 +20,17 @@ Core idea:
 
 <!-- BEGIN:nextjs-agent-rules -->
 
-# Next.js version-matched guidance
+# This is NOT the Next.js you know
 
-This project uses Next.js 16.3.4. Before changing framework behavior, read the relevant bundled documentation in `node_modules/next/dist/docs/`; APIs, conventions, and defaults may differ from earlier versions. Heed deprecation notices.
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Testing
+
+Run `npm test` for unit/component coverage and `npm run test:e2e` for browser journeys. See `TESTING.md`. Add tests for new functions, conditional branches, error handling, and every bug fix; do not commit failing tests.
 
 The website should feel emotional, adventurous, welcoming, local,
 photographic, and community-driven.
