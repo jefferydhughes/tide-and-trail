@@ -1,0 +1,2 @@
+const buckets=new Map<string,{count:number;reset:number}>()
+export function rateLimited(request:Request,scope:string,limit=10,windowMs=60_000){const forwarded=request.headers.get('x-forwarded-for')?.split(',')[0]?.trim();const ip=forwarded||request.headers.get('x-real-ip')||'unknown';const key=`${scope}:${ip}`;const now=Date.now();const current=buckets.get(key);if(!current||current.reset<now){buckets.set(key,{count:1,reset:now+windowMs});return false}current.count+=1;return current.count>limit}

@@ -1,0 +1,5 @@
+import { NextResponse } from 'next/server'
+import { supabaseAdmin } from '@/lib/supabaseAdmin'
+import { rateLimited } from '@/lib/rateLimit'
+import { cleanString, isUuid, validEmail } from '@/lib/validation'
+export async function POST(request:Request){if(rateLimited(request,'product-reserve',5,60*60*1000))return NextResponse.json({error:'Too many requests. Please try again later.'},{status:429});try{const b=await request.json(),name=cleanString(b.name,120),email=validEmail(b.email);if(!isUuid(b.productId)||!name||!email)return NextResponse.json({error:'Valid name and email are required.'},{status:400});const{error}=await supabaseAdmin().rpc('reserve_product',{p_product_id:b.productId,p_name:name,p_email:email,p_phone:cleanString(b.phone,40)||null,p_notes:cleanString(b.notes,1000)||null});if(error?.message.includes('PRODUCT_UNAVAILABLE'))return NextResponse.json({error:'That gear is no longer available.'},{status:409});if(error)throw error;return NextResponse.json({ok:true})}catch(e){console.error(e);return NextResponse.json({error:'Unable to hold this gear right now.'},{status:500})}}

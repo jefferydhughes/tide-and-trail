@@ -1,0 +1,1 @@
+export default function Loading(){return <main className="container-x min-h-[50vh] py-24"><div className="animate-pulse rounded-3xl bg-sage p-10"><p className="text-sm font-black uppercase tracking-widest text-rust">Loading the next adventure…</p></div></main>}

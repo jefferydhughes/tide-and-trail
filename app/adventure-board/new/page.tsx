@@ -1,0 +1,2 @@
+import { RequestForm } from '@/components/RequestForm'
+export default function NewAdventure(){return <main className="container-x py-16"><div className="mx-auto max-w-xl"><span className="pill">Adventure Board</span><h1 className="display mt-5 text-5xl text-forest">Put an adventure on the board.</h1><p className="mt-4 text-forest/60">Posts are reviewed before publishing. Share a general meeting area publicly and save exact details for people you trust.</p><div className="mt-8 rounded-3xl bg-white p-7 shadow-soft"><RequestForm type="adventure"/></div></div></main>}

@@ -18,6 +18,14 @@ Core idea:
 
 **Good Gear. Another Adventure.**
 
+<!-- BEGIN:nextjs-agent-rules -->
+
+# Next.js version-matched guidance
+
+This project uses Next.js 16.3.4. Before changing framework behavior, read the relevant bundled documentation in `node_modules/next/dist/docs/`; APIs, conventions, and defaults may differ from earlier versions. Heed deprecation notices.
+
+<!-- END:nextjs-agent-rules -->
+
 The website should feel emotional, adventurous, welcoming, local,
 photographic, and community-driven.
 

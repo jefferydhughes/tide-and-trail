@@ -1,0 +1,2 @@
+'use client'
+export default function ErrorPage({reset}:{error:Error&{digest?:string};reset:()=>void}){return <main className="container-x py-24 text-center"><span className="pill">Something went off trail</span><h1 className="display mt-6 text-6xl text-forest">Let’s find the path again.</h1><p className="mx-auto mt-4 max-w-xl text-forest/60">We couldn’t load this page. Your information has not been resubmitted.</p><button onClick={reset} className="btn-primary mt-7">Try again</button></main>}
