@@ -1,0 +1,2 @@
+import Link from 'next/link'
+export default function NotFound(){return <main className="container-x py-24 text-center"><span className="pill">Trail not found</span><h1 className="display mt-6 text-6xl text-forest">This path doesn’t go anywhere.</h1><p className="mx-auto mt-4 max-w-xl text-forest/60">The page may have moved, or the gear may already be off on another adventure.</p><Link href="/" className="btn-primary mt-7">Back to basecamp</Link></main>}

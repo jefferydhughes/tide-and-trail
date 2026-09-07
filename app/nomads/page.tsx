@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     title: "Nomads Café | Secret Coffee Hike",
     description:
       "A coffee shop with no address. Secret trail. Great coffee. 40 spots. September 26 at 8:00 AM.",
-    images: ["/images/nomads-cafe-logo.jpg"],
+    images: ["/assets/logos/Nomads-cafe-logo.jpg"],
   },
 };
 
@@ -125,7 +125,7 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
             <div className="order-1 md:order-2">
               <div className="mx-auto max-w-xl">
                 <Image
-                  src="/images/nomads-cafe-logo.jpg"
+                  src="/assets/logos/Nomads-cafe-logo.jpg"
                   alt="Nomads Café — Good Coffee. Better Stories."
                   width={1536}
                   height={1024}
