@@ -196,7 +196,7 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
                 {
                   n: "04",
                   title: "We bring the coffee",
-                  text: "Meet us at 8:00 AM, pour a cup, meet the crew, and head out together.",
+                  text: "Meet us at 8:00 AM, meet people, and head out together, drink coffee, leave when you need to.",
                 },
               ].map((item) => (
                 <div
