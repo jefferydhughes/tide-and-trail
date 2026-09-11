@@ -227,7 +227,7 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
               <p className="mt-6 text-lg leading-relaxed text-[#0C2A3A]/80">
                 Come with friends or come solo. Nomads Café is designed to make
                 it easy to meet people without forcing the awkward networking
-                thing. Coffee first. Trail second. Stories tend to happen on
+                thing. Trail first. Hike second. Stories tend to happen on
                 their own.
               </p>
             </div>
