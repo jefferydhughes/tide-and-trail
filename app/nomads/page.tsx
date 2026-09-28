@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import SignupForm from "@/components/SignupForm";
+import OptionalDonation from "@/components/OptionalDonation";
 
 export const metadata: Metadata = {
   title: "Nomads Café | Secret Coffee Hike | Tide & Trail",
@@ -15,6 +17,10 @@ export const metadata: Metadata = {
 };
 
 export default function NomadsCafeSunriseCoffeeHikePage() {
+  const eventId = process.env.NOMADS_EVENT_ID;
+  const squareApplicationId = process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID;
+  const squareLocationId = process.env.SQUARE_LOCATION_ID;
+  const squareEnvironment = process.env.SQUARE_ENVIRONMENT;
   return (
     <>
       <main className="min-h-screen bg-[#F4E7C7] text-[#0C2A3A]">
@@ -63,10 +69,10 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
-                  href="/newsletter"
+                  href={eventId ? "#register" : "/newsletter"}
                   className="inline-flex min-h-14 items-center justify-center rounded-full bg-[#E9552D] px-7 text-base font-black uppercase tracking-wide text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-[#cf4421]"
                 >
-                  Hear about the next hike
+                  {eventId ? "Reserve a free spot" : "Hear about the next hike"}
                 </Link>
                 <a
                   href="#how-it-works"
@@ -77,7 +83,7 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
               </div>
 
               <p className="mt-4 text-sm font-semibold text-[#0C2A3A]/70">
-                When registration opens, we&apos;ll share how to claim a free spot.
+                {eventId ? "Registration is free. A donation is entirely optional." : "When registration opens, we&apos;ll share how to claim a free spot."}
                 Registered hikers receive the trailhead coordinates 24 hours before the hike.
               </p>
             </div>
@@ -140,8 +146,8 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
               {[
                 {
                   n: "01",
-                  title: "Watch for registration",
-                  text: "The hike is free, with a suggested $5 donation. We will announce the next date and how to claim a spot soon.",
+                  title: eventId ? "Reserve your free spot" : "Watch for registration",
+                  text: eventId ? "Register below at no cost. A suggested $5 donation is optional." : "The hike is free, with a suggested $5 donation. We will announce the next date and how to claim a spot soon.",
                 },
                 {
                   n: "02",
@@ -171,6 +177,30 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
                 </div>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* FREE REGISTRATION AND OPTIONAL CONTRIBUTION */}
+        <section id="register" className="mx-auto max-w-7xl px-5 pb-16 md:px-8 lg:px-12">
+          <div className="grid gap-6 lg:grid-cols-2">
+            <div className="rounded-[2rem] bg-[#0C2A3A] p-6 text-[#F4E7C7] md:p-8">
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-[#F4A62A]">Free registration</p>
+              <h2 className="mt-2 text-3xl font-black uppercase">Come hike with us.</h2>
+              {eventId ? (
+                <>
+                  <p className="my-5 text-[#F4E7C7]/85">Reserve a free spot. You can make an optional contribution separately.</p>
+                  <div className="rounded-2xl bg-[#F4E7C7] p-5 text-[#0C2A3A]">
+                    <SignupForm type="event" eventId={eventId} eventTitle="Nomads Café" />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p className="my-5 text-[#F4E7C7]/85">The next date is coming soon. Join the newsletter to hear when registration opens.</p>
+                  <Link href="/newsletter" className="inline-flex rounded-full bg-[#E9552D] px-6 py-3 font-black uppercase text-white">Hear about the next hike</Link>
+                </>
+              )}
+            </div>
+            <OptionalDonation applicationId={squareApplicationId} locationId={squareLocationId} environment={squareEnvironment} />
           </div>
         </section>
 
