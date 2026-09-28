@@ -59,7 +59,7 @@ export default function OptionalDonation({
   useEffect(() => () => { if (card.current) void card.current.destroy() }, [])
 
   async function pay() {
-    if (!validAmount || !cardReady || loading) return
+    if (!validAmount || !card.current || loading) return
     setLoading(true)
     setError('')
     try {
