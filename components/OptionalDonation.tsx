@@ -20,12 +20,14 @@ export default function OptionalDonation({
   const [amount, setAmount] = useState(0)
   const [custom, setCustom] = useState('')
   const [ready, setReady] = useState(false)
+  const [cardReady, setCardReady] = useState(false)
   const [loading, setLoading] = useState(false)
   const [complete, setComplete] = useState(false)
   const [error, setError] = useState('')
   const card = useRef<Card | null>(null)
   const container = useRef<HTMLDivElement>(null)
   const key = useRef<string | null>(null)
+  const paymentToken = useRef<string | null>(null)
 
   const dollars = amount === -1 ? Number(custom) : amount
   const cents = Math.round(dollars * 100)
@@ -45,6 +47,7 @@ export default function OptionalDonation({
         if (cancelled) { await instance.destroy(); return }
         await instance.attach(target)
         card.current = instance
+        setCardReady(true)
       } catch {
         setError('The card form could not load. Please try again later.')
       }
@@ -56,19 +59,22 @@ export default function OptionalDonation({
   useEffect(() => () => { if (card.current) void card.current.destroy() }, [])
 
   async function pay() {
-    if (!validAmount || !card.current || loading) return
+    if (!validAmount || !cardReady || loading) return
     setLoading(true)
     setError('')
     try {
-      const token = await card.current.tokenize({
-        amount: dollars.toFixed(2), currencyCode: 'CAD', intent: 'CHARGE',
-        customerInitiated: true, sellerKeyedIn: false,
-      })
-      if (token.status !== 'OK' || !token.token) throw new Error('Please check your card details.')
+      if (!paymentToken.current) {
+        const token = await card.current.tokenize({
+          amount: dollars.toFixed(2), currencyCode: 'CAD', intent: 'CHARGE',
+          customerInitiated: true, sellerKeyedIn: false,
+        })
+        if (token.status !== 'OK' || !token.token) throw new Error('Please check your card details.')
+        paymentToken.current = token.token
+      }
       key.current ||= crypto.randomUUID()
       const response = await fetch('/api/donations', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amountCents: cents, sourceId: token.token, idempotencyKey: key.current }),
+        body: JSON.stringify({ amountCents: cents, sourceId: paymentToken.current, idempotencyKey: key.current }),
       })
       const result = await response.json()
       if (!response.ok) throw new Error(result.error || 'Payment could not be completed.')
@@ -87,7 +93,7 @@ export default function OptionalDonation({
       <p className="mt-3 text-[#0C2A3A]/75">The hike is free. If you would like to chip in for coffee and future meetups, choose an amount. No donation is needed to join.</p>
       <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4" role="group" aria-label="Donation amount">
         {choices.map(value => (
-          <button key={value} type="button" onClick={() => { setAmount(value); setError(''); key.current = null }}
+          <button key={value} type="button" onClick={() => { setAmount(value); setError(''); key.current = null; paymentToken.current = null }}
             aria-pressed={amount === value}
             className={`rounded-full border-2 px-4 py-3 font-black transition ${amount === value ? 'border-[#E9552D] bg-[#E9552D] text-white' : 'border-[#0C2A3A]/20 hover:border-[#E9552D]'}`}>
             {value === 0 ? 'No thanks' : `$${value}`}
