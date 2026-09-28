@@ -5,58 +5,18 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Nomads Café | Secret Coffee Hike | Tide & Trail",
   description:
-    "A secret-location coffee hike by Tide & Trail. September 26 at 8:00 AM. Bring your mug, we bring the coffee. Only 40 spots.",
+    "Secret-location coffee hikes by Tide & Trail. Free to join, with a suggested $5 donation. Bring your mug; we bring the coffee.",
   openGraph: {
     title: "Nomads Café | Secret Coffee Hike",
     description:
-      "A coffee shop with no address. Secret trail. Great coffee. 40 spots. September 26 at 8:00 AM.",
+      "A coffee shop with no address. Secret trails, good coffee, and good company. Free to join; suggested $5 donation.",
     images: ["/assets/logos/Nomads-cafe-logo.jpg"],
-  },
-};
-
-const CHECKOUT_URL =
-  "https://checkout.square.site/merchant/MLJZME1095G4W/checkout/EZHJOIOQ2USAD7ZHQ653FTQC";
-
-const eventJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Event",
-  name: "Nomads Café — Secret Coffee Hike",
-  description:
-    "A secret-location coffee hike hosted by Tide & Trail. Bring your mug; we bring the coffee. Trailhead coordinates are sent 24 hours before the event.",
-  startDate: "2026-09-26T08:00:00-03:00",
-  eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-  eventStatus: "https://schema.org/EventScheduled",
-  location: {
-    "@type": "Place",
-    name: "Secret trail location — coordinates sent 24 hours before",
-    address: {
-      "@type": "PostalAddress",
-      addressRegion: "New Brunswick",
-      addressCountry: "CA",
-    },
-  },
-  organizer: {
-    "@type": "Organization",
-    name: "Tide & Trail",
-    url: "https://www.tide-and-trail.com",
-  },
-  offers: {
-    "@type": "Offer",
-    price: "5.00",
-    priceCurrency: "CAD",
-    availability: "https://schema.org/LimitedAvailability",
-    url: CHECKOUT_URL,
   },
 };
 
 export default function NomadsCafeSunriseCoffeeHikePage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(eventJsonLd) }}
-      />
-
       <main className="min-h-screen bg-[#F4E7C7] text-[#0C2A3A]">
         {/* HERO */}
         <section className="relative overflow-hidden border-b border-[#0C2A3A]/15">
@@ -81,33 +41,33 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
               </h1>
 
               <p className="mt-6 max-w-xl text-lg font-medium leading-relaxed md:text-xl">
-                Join the first <strong>Nomads Café</strong>: a secret-location
+                Join <strong>Nomads Café</strong>: a secret-location
                 morning hike with hot coffee, a beautiful trail, and a small
                 crew of people who would rather spend their morning outside.
               </p>
 
               <div className="mt-7 flex flex-wrap gap-3 text-sm font-black uppercase tracking-wide">
                 <span className="rounded-full bg-[#0C2A3A] px-4 py-2 text-[#F4E7C7]">
-                  Sept 26
+                  Next date to be announced
                 </span>
                 <span className="rounded-full bg-[#0C2A3A] px-4 py-2 text-[#F4E7C7]">
-                  8:00 AM
+                  Morning hikes
                 </span>
                 <span className="rounded-full bg-[#0C2A3A] px-4 py-2 text-[#F4E7C7]">
-                  $5
+                  Free · $5 suggested donation
                 </span>
                 <span className="rounded-full bg-[#E9552D] px-4 py-2 text-white">
-                  Only 40 spots
+                  Limited spots
                 </span>
               </div>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a
-                  href={CHECKOUT_URL}
+                <Link
+                  href="/newsletter"
                   className="inline-flex min-h-14 items-center justify-center rounded-full bg-[#E9552D] px-7 text-base font-black uppercase tracking-wide text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-[#cf4421]"
                 >
-                  Buy Tickets — $5
-                </a>
+                  Hear about the next hike
+                </Link>
                 <a
                   href="#how-it-works"
                   className="inline-flex min-h-14 items-center justify-center rounded-full border-2 border-[#0C2A3A] px-7 text-base font-black uppercase tracking-wide transition hover:bg-[#0C2A3A] hover:text-[#F4E7C7]"
@@ -117,8 +77,8 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
               </div>
 
               <p className="mt-4 text-sm font-semibold text-[#0C2A3A]/70">
-                Trailhead coordinates are emailed to ticket holders 24 hours
-                before the hike.
+                When registration opens, we&apos;ll share how to claim a free spot.
+                Registered hikers receive the trailhead coordinates 24 hours before the hike.
               </p>
             </div>
 
@@ -180,13 +140,13 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
               {[
                 {
                   n: "01",
-                  title: "Grab a ticket",
-                  text: "Your $5 ticket reserves one of only 40 places.",
+                  title: "Watch for registration",
+                  text: "The hike is free, with a suggested $5 donation. We&apos;ll announce the next date and how to claim a spot soon.",
                 },
                 {
                   n: "02",
                   title: "Watch your inbox",
-                  text: "We send the secret trailhead coordinates 24 hours before.",
+                  text: "Registered hikers receive the secret trailhead coordinates 24 hours before.",
                 },
                 {
                   n: "03",
@@ -196,7 +156,7 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
                 {
                   n: "04",
                   title: "We bring the coffee",
-                  text: "Meet us at 8:00 AM, meet people, and head out together, drink coffee, leave when you need to.",
+                  text: "Meet the group at the announced start time, head out together, and enjoy coffee after the hike.",
                 },
               ].map((item) => (
                 <div
@@ -227,7 +187,7 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
               <p className="mt-6 text-lg leading-relaxed text-[#0C2A3A]/80">
                 Come with friends or come solo. Nomads Café is designed to make
                 it easy to meet people without forcing the awkward networking
-                thing. Trail first. Hike second. Stories tend to happen on
+                thing. Hike first. Coffee second. Stories tend to happen on
                 their own.
               </p>
             </div>
@@ -266,11 +226,11 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
               <dl className="mt-8 space-y-4 text-base">
                 <div className="flex justify-between gap-6 border-b border-white/15 pb-4">
                   <dt className="font-bold text-white/60">Date</dt>
-                  <dd className="text-right font-black">September 26</dd>
+                  <dd className="text-right font-black">Next date to be announced</dd>
                 </div>
                 <div className="flex justify-between gap-6 border-b border-white/15 pb-4">
                   <dt className="font-bold text-white/60">Start</dt>
-                  <dd className="text-right font-black">8:00 AM</dd>
+                  <dd className="text-right font-black">To be announced</dd>
                 </div>
                 <div className="flex justify-between gap-6 border-b border-white/15 pb-4">
                   <dt className="font-bold text-white/60">Location</dt>
@@ -279,12 +239,12 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
                   </dd>
                 </div>
                 <div className="flex justify-between gap-6 border-b border-white/15 pb-4">
-                  <dt className="font-bold text-white/60">Price</dt>
-                  <dd className="text-right font-black">$5 CAD</dd>
+                  <dt className="font-bold text-white/60">Cost</dt>
+                  <dd className="text-right font-black">Free · suggested $5 donation</dd>
                 </div>
                 <div className="flex justify-between gap-6">
                   <dt className="font-bold text-white/60">Capacity</dt>
-                  <dd className="text-right font-black">40 people</dd>
+                  <dd className="text-right font-black">Limited spots; details with next date</dd>
                 </div>
               </dl>
             </div>
@@ -303,7 +263,7 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
 
               <p className="mt-7 rounded-2xl bg-[#E8D6AD] p-4 text-sm font-semibold leading-relaxed">
                 We&apos;ll send final trail information and any weather-specific
-                notes to ticket holders before the event.
+                notes to registered hikers before the event.
               </p>
             </div>
           </div>
@@ -336,32 +296,32 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
         <section className="bg-[#E9552D] px-5 py-14 text-center text-white">
           <div className="mx-auto max-w-3xl">
             <p className="text-sm font-black uppercase tracking-[0.2em] text-white/75">
-              September 26 · 8:00 AM
+              Next date coming soon
             </p>
             <h2 className="mt-3 text-4xl font-black uppercase tracking-[-0.03em] md:text-5xl">
-              Forty mugs. One secret trail.
+Your mug. Our coffee. A new trail.
             </h2>
             <p className="mx-auto mt-5 max-w-xl text-lg font-semibold text-white/90">
-              Reserve your place now. We&apos;ll send the coordinates 24 hours
-              before the hike.
+Join the newsletter for the next date and registration details. The hike is free;
+              a $5 donation is welcome but never required.
             </p>
-            <a
-              href={CHECKOUT_URL}
+            <Link
+              href="/newsletter"
               className="mt-7 inline-flex min-h-14 items-center justify-center rounded-full bg-[#0C2A3A] px-8 text-base font-black uppercase tracking-wide text-[#F4E7C7] shadow-lg transition hover:-translate-y-0.5"
             >
-              Buy Tickets — $5
-            </a>
+              Hear about the next hike
+            </Link>
           </div>
         </section>
 
         {/* MOBILE STICKY CTA */}
         <div className="fixed inset-x-0 bottom-0 z-50 border-t border-black/10 bg-[#F4E7C7]/95 p-3 backdrop-blur md:hidden">
-          <a
-            href={CHECKOUT_URL}
+          <Link
+            href="/newsletter"
             className="flex min-h-12 w-full items-center justify-center rounded-full bg-[#E9552D] px-5 font-black uppercase tracking-wide text-white shadow-lg"
           >
-            Buy Tickets — $5
-          </a>
+            Hear about the next hike
+          </Link>
         </div>
       </main>
     </>
