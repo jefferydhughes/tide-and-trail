@@ -141,7 +141,7 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
                 {
                   n: "01",
                   title: "Watch for registration",
-                  text: "The hike is free, with a suggested $5 donation. We&apos;ll announce the next date and how to claim a spot soon.",
+                  text: "The hike is free, with a suggested $5 donation. We will announce the next date and how to claim a spot soon.",
                 },
                 {
                   n: "02",
