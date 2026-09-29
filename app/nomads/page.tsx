@@ -1,20 +1,40 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import SignupForm from "@/components/SignupForm";
+import OptionalDonation from "@/components/OptionalDonation";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { NOMADS_EVENT_ID, NOMADS_STARTS_AT, NOMADS_CAPACITY, nomadsRegistrationOpen } from "@/lib/nomadsEvent";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Nomads Café | Secret Coffee Hike | Tide & Trail",
   description:
-    "Secret-location coffee hikes by Tide & Trail. Free to join, with a suggested $5 donation. Bring your mug; we bring the coffee.",
+    "Nomads Café secret coffee hike, October 24 at 8:00 AM. Free registration, with a suggested $5 donation. Bring your mug; we bring the coffee.",
   openGraph: {
     title: "Nomads Café | Secret Coffee Hike",
     description:
-      "A coffee shop with no address. Secret trails, good coffee, and good company. Free to join; suggested $5 donation.",
+      "A coffee shop with no address. October 24 at 8:00 AM. Free to join; suggested $5 donation.",
     images: ["/assets/logos/Nomads-cafe-logo.jpg"],
   },
 };
 
-export default function NomadsCafeSunriseCoffeeHikePage() {
+export default async function NomadsCafeSunriseCoffeeHikePage() {
+  let registrationReady = false;
+  try {
+    const { data: event } = await supabaseAdmin().from('events')
+      .select('starts_at,capacity,price,status').eq('id', NOMADS_EVENT_ID).single();
+    registrationReady = !!event && event.status === 'published' &&
+      Date.parse(event.starts_at) === Date.parse(NOMADS_STARTS_AT) &&
+      event.capacity === NOMADS_CAPACITY && Number(event.price) === 0;
+  } catch { /* Keep registration closed until Supabase is configured. */ }
+  const registrationClosed = !nomadsRegistrationOpen();
+  const eventId = registrationReady && !registrationClosed ? NOMADS_EVENT_ID : undefined;
+  const registrationLabel = eventId ? "Sign up for the hike" : registrationClosed ? "Registration closed" : "Registration details";
+  const squareApplicationId = process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID;
+  const squareLocationId = process.env.SQUARE_LOCATION_ID;
+  const squareEnvironment = process.env.SQUARE_ENVIRONMENT;
   return (
     <>
       <main className="min-h-screen bg-[#F4E7C7] text-[#0C2A3A]">
@@ -48,25 +68,25 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
 
               <div className="mt-7 flex flex-wrap gap-3 text-sm font-black uppercase tracking-wide">
                 <span className="rounded-full bg-[#0C2A3A] px-4 py-2 text-[#F4E7C7]">
-                  Next date to be announced
+                  Saturday, October 24
                 </span>
                 <span className="rounded-full bg-[#0C2A3A] px-4 py-2 text-[#F4E7C7]">
-                  Morning hikes
+                  8:00 AM
                 </span>
                 <span className="rounded-full bg-[#0C2A3A] px-4 py-2 text-[#F4E7C7]">
                   Free · $5 suggested donation
                 </span>
                 <span className="rounded-full bg-[#E9552D] px-4 py-2 text-white">
-                  Limited spots
+                  40 spots
                 </span>
               </div>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
-                  href="/newsletter"
+                  href="#register"
                   className="inline-flex min-h-14 items-center justify-center rounded-full bg-[#E9552D] px-7 text-base font-black uppercase tracking-wide text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-[#cf4421]"
                 >
-                  Hear about the next hike
+                  {registrationLabel}
                 </Link>
                 <a
                   href="#how-it-works"
@@ -77,8 +97,8 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
               </div>
 
               <p className="mt-4 text-sm font-semibold text-[#0C2A3A]/70">
-                When registration opens, we&apos;ll share how to claim a free spot.
-                Registered hikers receive the trailhead coordinates 24 hours before the hike.
+                {eventId ? "Registration is free. A donation is entirely optional. " : registrationClosed ? "Registration has closed. " : "Registration will open once the event is ready. "}
+                Registration closes Friday, October 23 at 8:00 PM ADT. Registered hikers receive the trailhead coordinates 24 hours before the hike.
               </p>
             </div>
 
@@ -140,8 +160,8 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
               {[
                 {
                   n: "01",
-                  title: "Watch for registration",
-                  text: "The hike is free, with a suggested $5 donation. We will announce the next date and how to claim a spot soon.",
+                  title: eventId ? "Reserve your free spot" : "Watch for registration",
+                  text: eventId ? "Register below at no cost. A suggested $5 donation is optional." : "The hike is free, with a suggested $5 donation. Registration opens once the event is ready and closes 12 hours before the hike.",
                 },
                 {
                   n: "02",
@@ -171,6 +191,30 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
                 </div>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* FREE REGISTRATION AND OPTIONAL CONTRIBUTION */}
+        <section id="register" className="mx-auto max-w-7xl px-5 pb-16 md:px-8 lg:px-12">
+          <div className="grid gap-6 lg:grid-cols-2">
+            <div className="rounded-[2rem] bg-[#0C2A3A] p-6 text-[#F4E7C7] md:p-8">
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-[#F4A62A]">Free registration</p>
+              <h2 className="mt-2 text-3xl font-black uppercase">Come hike with us.</h2>
+              {eventId ? (
+                <>
+                  <p className="my-5 text-[#F4E7C7]/85">Reserve a free spot. You can make an optional contribution separately.</p>
+                  <div className="rounded-2xl bg-[#F4E7C7] p-5 text-[#0C2A3A]">
+                    <SignupForm type="event" eventId={eventId} eventTitle="Nomads Café" />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p className="my-5 text-[#F4E7C7]/85">{registrationClosed ? "Registration for this hike has closed." : "Registration for October 24 is being prepared. Join the newsletter for an opening update."}</p>
+                  {!registrationClosed && <Link href="/newsletter" className="inline-flex rounded-full bg-[#E9552D] px-6 py-3 font-black uppercase text-white">Get registration updates</Link>}
+                </>
+              )}
+            </div>
+            <OptionalDonation applicationId={squareApplicationId} locationId={squareLocationId} environment={squareEnvironment} />
           </div>
         </section>
 
@@ -226,11 +270,11 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
               <dl className="mt-8 space-y-4 text-base">
                 <div className="flex justify-between gap-6 border-b border-white/15 pb-4">
                   <dt className="font-bold text-white/60">Date</dt>
-                  <dd className="text-right font-black">Next date to be announced</dd>
+                  <dd className="text-right font-black">Saturday, October 24</dd>
                 </div>
                 <div className="flex justify-between gap-6 border-b border-white/15 pb-4">
                   <dt className="font-bold text-white/60">Start</dt>
-                  <dd className="text-right font-black">To be announced</dd>
+                  <dd className="text-right font-black">8:00 AM ADT</dd>
                 </div>
                 <div className="flex justify-between gap-6 border-b border-white/15 pb-4">
                   <dt className="font-bold text-white/60">Location</dt>
@@ -242,9 +286,9 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
                   <dt className="font-bold text-white/60">Cost</dt>
                   <dd className="text-right font-black">Free · suggested $5 donation</dd>
                 </div>
-                <div className="flex justify-between gap-6">
+                <div className="flex justify-between gap-6 border-b border-white/15 pb-4">
                   <dt className="font-bold text-white/60">Capacity</dt>
-                  <dd className="text-right font-black">Limited spots; details with next date</dd>
+                  <dd className="text-right font-black">40 people</dd>
                 </div>
               </dl>
             </div>
@@ -296,20 +340,20 @@ export default function NomadsCafeSunriseCoffeeHikePage() {
         <section className="bg-[#E9552D] px-5 py-14 text-center text-white">
           <div className="mx-auto max-w-3xl">
             <p className="text-sm font-black uppercase tracking-[0.2em] text-white/75">
-              Next date coming soon
+              Saturday, October 24 · 8:00 AM
             </p>
             <h2 className="mt-3 text-4xl font-black uppercase tracking-[-0.03em] md:text-5xl">
-Your mug. Our coffee. A new trail.
+Forty mugs. One secret trail.
             </h2>
             <p className="mx-auto mt-5 max-w-xl text-lg font-semibold text-white/90">
-Join the newsletter for the next date and registration details. The hike is free;
+{eventId ? "Sign up for a free place today." : registrationClosed ? "Registration for this hike is closed." : "Registration for this hike is being prepared."} The hike is free;
               a $5 donation is welcome but never required.
             </p>
             <Link
-              href="/newsletter"
+              href="#register"
               className="mt-7 inline-flex min-h-14 items-center justify-center rounded-full bg-[#0C2A3A] px-8 text-base font-black uppercase tracking-wide text-[#F4E7C7] shadow-lg transition hover:-translate-y-0.5"
             >
-              Hear about the next hike
+              {registrationLabel}
             </Link>
           </div>
         </section>
@@ -317,10 +361,10 @@ Join the newsletter for the next date and registration details. The hike is free
         {/* MOBILE STICKY CTA */}
         <div className="fixed inset-x-0 bottom-0 z-50 border-t border-black/10 bg-[#F4E7C7]/95 p-3 backdrop-blur md:hidden">
           <Link
-            href="/newsletter"
+            href="#register"
             className="flex min-h-12 w-full items-center justify-center rounded-full bg-[#E9552D] px-5 font-black uppercase tracking-wide text-white shadow-lg"
           >
-            Hear about the next hike
+            {registrationLabel}
           </Link>
         </div>
       </main>
