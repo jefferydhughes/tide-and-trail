@@ -26,7 +26,7 @@ export default async function NomadsCafeSunriseCoffeeHikePage() {
     const { data: event } = await supabaseAdmin().from('events')
       .select('starts_at,capacity,price,status').eq('id', NOMADS_EVENT_ID).single();
     registrationReady = !!event && event.status === 'published' &&
-      event.starts_at === new Date(NOMADS_STARTS_AT).toISOString() &&
+      Date.parse(event.starts_at) === Date.parse(NOMADS_STARTS_AT) &&
       event.capacity === NOMADS_CAPACITY && Number(event.price) === 0;
   } catch { /* Keep registration closed until Supabase is configured. */ }
   const eventId = registrationReady && nomadsRegistrationOpen() ? NOMADS_EVENT_ID : undefined;
