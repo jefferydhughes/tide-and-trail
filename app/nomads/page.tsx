@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import SignupForm from "@/components/SignupForm";
-import OptionalDonation from "@/components/OptionalDonation";
-import { supabaseAdmin } from "@/lib/supabaseAdmin";
-import { NOMADS_EVENT_ID, NOMADS_STARTS_AT, NOMADS_CAPACITY, nomadsRegistrationOpen } from "@/lib/nomadsEvent";
+import NomadsRegistrationForm from "@/components/NomadsRegistrationForm";
+import { squareConfig, nomadsSquareReady } from "@/lib/squareConfig";
+import { NOMADS_EVENT_ID, nomadsRegistrationOpen } from "@/lib/nomadsEvent";
 
 export const dynamic = "force-dynamic";
 
@@ -21,20 +20,11 @@ export const metadata: Metadata = {
 };
 
 export default async function NomadsCafeSunriseCoffeeHikePage() {
-  let registrationReady = false;
-  try {
-    const { data: event } = await supabaseAdmin().from('events')
-      .select('starts_at,capacity,price,status').eq('id', NOMADS_EVENT_ID).single();
-    registrationReady = !!event && event.status === 'published' &&
-      Date.parse(event.starts_at) === Date.parse(NOMADS_STARTS_AT) &&
-      event.capacity === NOMADS_CAPACITY && Number(event.price) === 0;
-  } catch { /* Keep registration closed until Supabase is configured. */ }
+  const registrationReady = nomadsSquareReady();
   const registrationClosed = !nomadsRegistrationOpen();
   const eventId = registrationReady && !registrationClosed ? NOMADS_EVENT_ID : undefined;
   const registrationLabel = eventId ? "Sign up for the hike" : registrationClosed ? "Registration closed" : "Registration details";
-  const squareApplicationId = process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID;
-  const squareLocationId = process.env.SQUARE_LOCATION_ID;
-  const squareEnvironment = process.env.SQUARE_ENVIRONMENT;
+  const square = squareConfig();
   return (
     <>
       <main className="min-h-screen bg-[#F4E7C7] text-[#0C2A3A]">
@@ -196,25 +186,24 @@ export default async function NomadsCafeSunriseCoffeeHikePage() {
 
         {/* FREE REGISTRATION AND OPTIONAL CONTRIBUTION */}
         <section id="register" className="mx-auto max-w-7xl px-5 pb-16 md:px-8 lg:px-12">
-          <div className="grid gap-6 lg:grid-cols-2">
+          <div className="mx-auto max-w-3xl">
             <div className="rounded-[2rem] bg-[#0C2A3A] p-6 text-[#F4E7C7] md:p-8">
               <p className="text-xs font-black uppercase tracking-[0.2em] text-[#F4A62A]">Free registration</p>
               <h2 className="mt-2 text-3xl font-black uppercase">Come hike with us.</h2>
               {eventId ? (
                 <>
-                  <p className="my-5 text-[#F4E7C7]/85">Reserve a free spot. You can make an optional contribution separately.</p>
-                  <div className="rounded-2xl bg-[#F4E7C7] p-5 text-[#0C2A3A]">
-                    <SignupForm type="event" eventId={eventId} eventTitle="Nomads Café" />
+                  <p className="my-5 text-[#F4E7C7]/85">Reserve your spot and choose an optional contribution in one checkout. Bring your mug. We’ll bring the coffee.</p>
+                  <div className="text-[#0C2A3A]">
+                    <NomadsRegistrationForm applicationId={square.applicationId} locationId={square.locationId} environment={square.environment} />
                   </div>
                 </>
               ) : (
                 <>
-                  <p className="my-5 text-[#F4E7C7]/85">{registrationClosed ? "Registration for this hike has closed." : "Registration for October 24 is being prepared. Join the newsletter for an opening update."}</p>
+                  <p className="my-5 text-[#F4E7C7]/85">{registrationClosed ? "Registration for this hike has closed." : "Registration is temporarily unavailable. Join the newsletter for updates."}</p>
                   {!registrationClosed && <Link href="/newsletter" className="inline-flex rounded-full bg-[#E9552D] px-6 py-3 font-black uppercase text-white">Get registration updates</Link>}
                 </>
               )}
             </div>
-            <OptionalDonation applicationId={squareApplicationId} locationId={squareLocationId} environment={squareEnvironment} />
           </div>
         </section>
 
