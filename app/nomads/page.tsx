@@ -5,6 +5,7 @@ import SignupForm from "@/components/SignupForm";
 import OptionalDonation from "@/components/OptionalDonation";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { NOMADS_EVENT_ID, NOMADS_STARTS_AT, NOMADS_CAPACITY, nomadsRegistrationOpen } from "@/lib/nomadsEvent";
+import { squareAccessToken, squareConfig } from "@/lib/squareConfig";
 
 export const dynamic = "force-dynamic";
 
@@ -32,9 +33,8 @@ export default async function NomadsCafeSunriseCoffeeHikePage() {
   const registrationClosed = !nomadsRegistrationOpen();
   const eventId = registrationReady && !registrationClosed ? NOMADS_EVENT_ID : undefined;
   const registrationLabel = eventId ? "Sign up for the hike" : registrationClosed ? "Registration closed" : "Registration details";
-  const squareApplicationId = process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID;
-  const squareLocationId = process.env.SQUARE_LOCATION_ID;
-  const squareEnvironment = process.env.SQUARE_ENVIRONMENT;
+  const square = squareConfig();
+  const donationsReady = Boolean(squareAccessToken());
   return (
     <>
       <main className="min-h-screen bg-[#F4E7C7] text-[#0C2A3A]">
@@ -214,7 +214,11 @@ export default async function NomadsCafeSunriseCoffeeHikePage() {
                 </>
               )}
             </div>
-            <OptionalDonation applicationId={squareApplicationId} locationId={squareLocationId} environment={squareEnvironment} />
+            <OptionalDonation
+              applicationId={donationsReady ? square.applicationId : undefined}
+              locationId={donationsReady ? square.locationId : undefined}
+              environment={donationsReady ? square.environment : undefined}
+            />
           </div>
         </section>
 
