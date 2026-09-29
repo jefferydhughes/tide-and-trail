@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { rateLimited } from '@/lib/rateLimit'
+import { squareAccessToken, squareConfig } from '@/lib/squareConfig'
 
 export const runtime = 'nodejs'
 
@@ -11,10 +12,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Too many attempts. Please try again later.' }, { status: 429 })
   }
 
-  const token = process.env.SQUARE_ACCESS_TOKEN
-  const locationId = process.env.SQUARE_LOCATION_ID
-  const environment = process.env.SQUARE_ENVIRONMENT
-  if (!token || !locationId || !['sandbox', 'production'].includes(environment || '')) {
+  const token = squareAccessToken()
+  const square = squareConfig()
+  if (!token) {
     return NextResponse.json({ error: 'Donations are not available yet.' }, { status: 503 })
   }
 
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
 
   try {
     const response = await fetch(
-      environment === 'production' ? 'https://connect.squareup.com/v2/payments' : 'https://connect.squareupsandbox.com/v2/payments',
+      square.apiUrl,
       {
         method: 'POST',
         headers: {
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
           source_id: sourceId,
           idempotency_key: idempotencyKey,
           amount_money: { amount: amountCents, currency: 'CAD' },
-          location_id: locationId,
+          location_id: square.locationId,
           autocomplete: true,
           note: 'Nomads Café optional contribution',
         }),
