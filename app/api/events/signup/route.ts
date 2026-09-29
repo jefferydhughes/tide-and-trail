@@ -13,7 +13,7 @@ export async function POST(request: Request) {
       if (!nomadsRegistrationOpen()) return NextResponse.json({ error: 'Registration for this hike has closed.' }, { status: 409 })
       const { data: event, error: eventError } = await supabaseAdmin().from('events')
         .select('starts_at,capacity,price,status').eq('id', NOMADS_EVENT_ID).single()
-      if (eventError || !event || event.status !== 'published' || event.starts_at !== new Date(NOMADS_STARTS_AT).toISOString() || event.capacity !== NOMADS_CAPACITY || Number(event.price) !== 0) {
+      if (eventError || !event || event.status !== 'published' || Date.parse(event.starts_at) !== Date.parse(NOMADS_STARTS_AT) || event.capacity !== NOMADS_CAPACITY || Number(event.price) !== 0) {
         return NextResponse.json({ error: 'Registration is not available yet.' }, { status: 503 })
       }
     }
