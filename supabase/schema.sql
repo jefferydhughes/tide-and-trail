@@ -154,7 +154,9 @@ create or replace function public.register_for_event(p_event_id uuid,p_name text
 returns uuid language plpgsql security definer set search_path = public as $$
 declare v_event events%rowtype; v_taken integer; v_id uuid;
 begin
-  select * into v_event from events where id=p_event_id and status='published' and starts_at>now() for update;
+  select * into v_event from events where id=p_event_id and status='published'
+    and starts_at>now()
+    and (id <> '57a628a5-b567-456e-9508-9324f99b387d'::uuid or starts_at>now() + interval '12 hours') for update;
   if not found then raise exception 'EVENT_UNAVAILABLE'; end if;
   select coalesce(sum(guests),0) into v_taken from event_signups where event_id=p_event_id;
   if v_event.capacity is not null and v_taken+p_guests>v_event.capacity then raise exception 'EVENT_FULL'; end if;
