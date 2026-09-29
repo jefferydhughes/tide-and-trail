@@ -6,7 +6,7 @@ The `/nomads` form sends one checkout to `/api/nomads/register`. No Supabase rea
 
 - **Not Now:** customer-linked $0 CAD order, a “Not Now / Free registration” line item with guest quantity, and zero-total settlement through PayOrder. No card is requested and no card payment is created.
 - **Contribution:** the same free-registration line item plus one optional-contribution line item for the entire party, with a completed CAD payment linked to the order and customer.
-- Both orders have scheduled PICKUP fulfillment for trailhead check-in on October 24 at 8 AM Atlantic. This enables visibility in Square Order Manager; the fulfillment note explains that this is hike check-in, not collection at a shop. The customer profile and recipient contain the email, and the order records guest count, notes, and marketing preference. Full notes are on the registration line item; the shorter fulfillment note is capped at Square’s 500-character limit.
+- Both orders have scheduled PICKUP fulfillment for trailhead check-in on October 24 at 9 AM Atlantic. This enables visibility in Square Order Manager; the fulfillment note explains that this is hike check-in, not collection at a shop. The customer profile and recipient contain the email, and the order records guest count, notes, and marketing preference. Full notes are on the registration line item; the shorter fulfillment note is capped at Square’s 500-character limit.
 - Search for an existing customer by email before creating a profile; existing profiles are not overwritten.
 
 Only settled registrations count. An order created before a failed/abandoned card payment is not a confirmed registration. Staff should check the payment/settlement state, not simply count customer profiles or open orders.
@@ -45,3 +45,7 @@ References: [Pay for Orders](https://developer.squareup.com/docs/orders-api/pay-
 ## Card verification request
 
 Square requires `billingContact` when verification details are passed to `card.tokenize()`. The form sends the entered name, email, and optional phone alongside the CAD amount and charge intent. Omitting the entire object produces `VALIDATION_ERROR` for `verificationDetails.billingContact` before the SDK requests a card token. The desktop/mobile checkout mocks enforce this requirement. See [Square’s card payment flow](https://developer.squareup.com/docs/web-payments/take-card-payment).
+
+## October hike time correction
+
+The hike starts October 24 at **9 AM Atlantic (12:00 UTC)**. New Square orders use `NOMADS_STARTS_AT` from `lib/nomadsEvent.ts`. Apply `supabase/migrations/20260929_nomads_start_time_correction.sql` in Supabase SQL Editor to update the event used by the Events page and preserve the October 23, 8 PM cutoff. This changes no table structure or signups. Existing Square orders are not updated by a website deployment; review their scheduled check-in time in Square and correct any still showing 8 AM.

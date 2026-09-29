@@ -1,12 +1,10 @@
--- Apply in Supabase SQL Editor before opening October Nomads registration.
--- The event UUID must already exist. Preserve existing signups; verify them against capacity.
+-- Correct the existing October hike without changing signups or other event details.
+-- Apply in Supabase SQL Editor even if the earlier October migration was already applied.
 update public.events
-set starts_at = '2026-10-24 09:00:00-03'::timestamptz,
-    capacity = 40,
-    price = 0,
-    status = 'published'
+set starts_at = '2026-10-24 09:00:00-03'::timestamptz
 where id = '57a628a5-b567-456e-9508-9324f99b387d'::uuid;
 
+-- Keep registration closing at the advertised October 23, 8 PM Atlantic deadline.
 create or replace function public.register_for_event(p_event_id uuid,p_name text,p_email text,p_phone text,p_guests integer,p_notes text,p_marketing_opt_in boolean)
 returns uuid language plpgsql security definer set search_path = public as $$
 declare v_event events%rowtype; v_taken integer; v_id uuid;

@@ -32,3 +32,10 @@ test('custom contribution submits contact details and card token together', asyn
   expect((await request).postDataJSON()).toMatchObject({ name: 'Test Hiker', guests: 2, amountCents: 100, sourceId: 'sandbox-test-token' })
   await expect(page.getByRole('status')).toContainText('$1.00 CAD contribution')
 })
+
+test('shows the corrected 9 AM hike time and preserves the registration deadline', async ({ page }) => {
+  await expect(page.locator('main').last()).toContainText('9:00 AM ADT')
+  await expect(page.locator('main').last()).not.toContainText('8:00 AM')
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /October 24 at 9:00 AM/)
+  await expect(page.locator('main').last()).toContainText('October 23 at 8:00 PM ADT')
+})

@@ -2,7 +2,7 @@ import { beforeEach, afterEach, expect, it, vi } from 'vitest'
 import { POST } from '@/app/api/nomads/register/route'
 const mocks = vi.hoisted(() => ({ limited: vi.fn(() => false), open: vi.fn(() => true) }))
 vi.mock('@/lib/rateLimit', () => ({ rateLimited: mocks.limited }))
-vi.mock('@/lib/nomadsEvent', () => ({ NOMADS_EVENT_ID: 'event', NOMADS_STARTS_AT: '2026-10-24T08:00:00-03:00', nomadsRegistrationOpen: mocks.open }))
+vi.mock('@/lib/nomadsEvent', async importOriginal => ({ ...await importOriginal<typeof import('@/lib/nomadsEvent')>(), nomadsRegistrationOpen: mocks.open }))
 const input = { name: 'Alex Hiker', email: 'alex@example.ca', phone: '', notes: 'First hike', guests: 2, marketingOptIn: false, amountCents: 0, idempotencyKey: 'ade45678-1234-4234-8234-123456789abc' }
 let calls: { path: string; body: Record<string, any> }[]
 function response(body: unknown, status = 200) { return new Response(JSON.stringify(body), { status }) }
@@ -109,4 +109,10 @@ it('never confirms an incomplete card payment', async () => {
     .mockResolvedValueOnce(response({ order: { id: 'order-1', total_money: { amount: 500, currency: 'CAD' } } }))
     .mockResolvedValueOnce(response({ payment: { status: 'PENDING' } }))
   expect((await submit({ ...input, amountCents: 500, sourceId: 'sandbox-token' })).status).toBe(502)
+})
+
+it.each([0, 500])('schedules trailhead check-in at 9 AM Atlantic for a %i-cent registration', async amountCents => {
+  expect((await submit({ ...input, amountCents, ...(amountCents ? { sourceId: 'sandbox-token' } : {}) })).status).toBe(200)
+  const order = calls.find(c => c.path === '/v2/orders')!.body.order
+  expect(order.fulfillments[0].pickup_details.pickup_at).toBe('2026-10-24T09:00:00-03:00')
 })

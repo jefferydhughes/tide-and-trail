@@ -10,11 +10,11 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Nomads Café | Secret Coffee Hike | Tide & Trail",
   description:
-    "Nomads Café secret coffee hike, October 24 at 8:00 AM. Free registration, with a suggested $5 donation. Bring your mug; we bring the coffee.",
+    "Nomads Café secret coffee hike, October 24 at 9:00 AM. Free registration, with a suggested $5 donation. Bring your mug; we bring the coffee.",
   openGraph: {
     title: "Nomads Café | Secret Coffee Hike",
     description:
-      "A coffee shop with no address. October 24 at 8:00 AM. Free to join; suggested $5 donation.",
+      "A coffee shop with no address. October 24 at 9:00 AM. Free to join; suggested $5 donation.",
     images: ["/assets/logos/Nomads-cafe-logo.jpg"],
   },
 };
@@ -61,7 +61,7 @@ export default async function NomadsCafeSunriseCoffeeHikePage() {
                   Saturday, October 24
                 </span>
                 <span className="rounded-full bg-[#0C2A3A] px-4 py-2 text-[#F4E7C7]">
-                  8:00 AM
+                  9:00 AM
                 </span>
                 <span className="rounded-full bg-[#0C2A3A] px-4 py-2 text-[#F4E7C7]">
                   Free · $5 suggested donation
@@ -151,7 +151,7 @@ export default async function NomadsCafeSunriseCoffeeHikePage() {
                 {
                   n: "01",
                   title: eventId ? "Reserve your free spot" : "Watch for registration",
-                  text: eventId ? "Register below at no cost. A suggested $5 donation is optional." : "The hike is free, with a suggested $5 donation. Registration opens once the event is ready and closes 12 hours before the hike.",
+                  text: eventId ? "Register below at no cost. A suggested $5 donation is optional." : "The hike is free, with a suggested $5 donation. Registration opens once the event is ready and closes Friday, October 23 at 8 PM ADT.",
                 },
                 {
                   n: "02",
@@ -263,7 +263,7 @@ export default async function NomadsCafeSunriseCoffeeHikePage() {
                 </div>
                 <div className="flex justify-between gap-6 border-b border-white/15 pb-4">
                   <dt className="font-bold text-white/60">Start</dt>
-                  <dd className="text-right font-black">8:00 AM ADT</dd>
+                  <dd className="text-right font-black">9:00 AM ADT</dd>
                 </div>
                 <div className="flex justify-between gap-6 border-b border-white/15 pb-4">
                   <dt className="font-bold text-white/60">Location</dt>
@@ -329,7 +329,7 @@ export default async function NomadsCafeSunriseCoffeeHikePage() {
         <section className="bg-[#E9552D] px-5 py-14 text-center text-white">
           <div className="mx-auto max-w-3xl">
             <p className="text-sm font-black uppercase tracking-[0.2em] text-white/75">
-              Saturday, October 24 · 8:00 AM
+              Saturday, October 24 · 9:00 AM
             </p>
             <h2 className="mt-3 text-4xl font-black uppercase tracking-[-0.03em] md:text-5xl">
 Forty mugs. One secret trail.
