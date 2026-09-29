@@ -29,7 +29,9 @@ export default async function NomadsCafeSunriseCoffeeHikePage() {
       Date.parse(event.starts_at) === Date.parse(NOMADS_STARTS_AT) &&
       event.capacity === NOMADS_CAPACITY && Number(event.price) === 0;
   } catch { /* Keep registration closed until Supabase is configured. */ }
-  const eventId = registrationReady && nomadsRegistrationOpen() ? NOMADS_EVENT_ID : undefined;
+  const registrationClosed = !nomadsRegistrationOpen();
+  const eventId = registrationReady && !registrationClosed ? NOMADS_EVENT_ID : undefined;
+  const registrationLabel = eventId ? "Sign up for the hike" : registrationClosed ? "Registration closed" : "Registration details";
   const squareApplicationId = process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID;
   const squareLocationId = process.env.SQUARE_LOCATION_ID;
   const squareEnvironment = process.env.SQUARE_ENVIRONMENT;
@@ -81,10 +83,10 @@ export default async function NomadsCafeSunriseCoffeeHikePage() {
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
-                  href={eventId ? "#register" : "/newsletter"}
+                  href="#register"
                   className="inline-flex min-h-14 items-center justify-center rounded-full bg-[#E9552D] px-7 text-base font-black uppercase tracking-wide text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-[#cf4421]"
                 >
-                  {eventId ? "Reserve a free spot" : "Hear about the next hike"}
+                  {registrationLabel}
                 </Link>
                 <a
                   href="#how-it-works"
@@ -95,8 +97,8 @@ export default async function NomadsCafeSunriseCoffeeHikePage() {
               </div>
 
               <p className="mt-4 text-sm font-semibold text-[#0C2A3A]/70">
-                {eventId ? "Registration is free. A donation is entirely optional." : "Registration opens once the event is ready."}
-                Registration closes Friday, October 23 at 8:00 PM. Registered hikers receive the trailhead coordinates 24 hours before the hike.
+                {eventId ? "Registration is free. A donation is entirely optional. " : registrationClosed ? "Registration has closed. " : "Registration will open once the event is ready. "}
+                Registration closes Friday, October 23 at 8:00 PM ADT. Registered hikers receive the trailhead coordinates 24 hours before the hike.
               </p>
             </div>
 
@@ -207,8 +209,8 @@ export default async function NomadsCafeSunriseCoffeeHikePage() {
                 </>
               ) : (
                 <>
-                  <p className="my-5 text-[#F4E7C7]/85">Registration is not open right now. Join the newsletter for updates.</p>
-                  <Link href="/newsletter" className="inline-flex rounded-full bg-[#E9552D] px-6 py-3 font-black uppercase text-white">Hear about the next hike</Link>
+                  <p className="my-5 text-[#F4E7C7]/85">{registrationClosed ? "Registration for this hike has closed." : "Registration for October 24 is being prepared. Join the newsletter for an opening update."}</p>
+                  {!registrationClosed && <Link href="/newsletter" className="inline-flex rounded-full bg-[#E9552D] px-6 py-3 font-black uppercase text-white">Get registration updates</Link>}
                 </>
               )}
             </div>
@@ -344,14 +346,14 @@ export default async function NomadsCafeSunriseCoffeeHikePage() {
 Forty mugs. One secret trail.
             </h2>
             <p className="mx-auto mt-5 max-w-xl text-lg font-semibold text-white/90">
-Reserve your free place when registration opens. The hike is free;
+{eventId ? "Sign up for a free place today." : registrationClosed ? "Registration for this hike is closed." : "Registration for this hike is being prepared."} The hike is free;
               a $5 donation is welcome but never required.
             </p>
             <Link
-              href="/newsletter"
+              href="#register"
               className="mt-7 inline-flex min-h-14 items-center justify-center rounded-full bg-[#0C2A3A] px-8 text-base font-black uppercase tracking-wide text-[#F4E7C7] shadow-lg transition hover:-translate-y-0.5"
             >
-              Hear about the next hike
+              {registrationLabel}
             </Link>
           </div>
         </section>
@@ -359,10 +361,10 @@ Reserve your free place when registration opens. The hike is free;
         {/* MOBILE STICKY CTA */}
         <div className="fixed inset-x-0 bottom-0 z-50 border-t border-black/10 bg-[#F4E7C7]/95 p-3 backdrop-blur md:hidden">
           <Link
-            href="/newsletter"
+            href="#register"
             className="flex min-h-12 w-full items-center justify-center rounded-full bg-[#E9552D] px-5 font-black uppercase tracking-wide text-white shadow-lg"
           >
-            Hear about the next hike
+            {registrationLabel}
           </Link>
         </div>
       </main>
