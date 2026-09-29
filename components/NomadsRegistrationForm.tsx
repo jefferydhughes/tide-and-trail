@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react'
 
 type Card = {
   attach: (element: HTMLElement) => Promise<void>
-  tokenize: (details: { amount: string; currencyCode: string; intent: 'CHARGE'; customerInitiated: true; sellerKeyedIn: false }) => Promise<{ status: string; token?: string; errors?: { type?: string; code?: string; field?: string }[] }>
+  tokenize: (details: { billingContact: { givenName: string; email: string; phone?: string }; amount: string; currencyCode: string; intent: 'CHARGE'; customerInitiated: true; sellerKeyedIn: false }) => Promise<{ status: string; token?: string; errors?: { type?: string; code?: string; field?: string }[] }>
   destroy: () => Promise<void>
 }
 type SquareWindow = Window & {
@@ -85,6 +85,11 @@ export default function NomadsRegistrationForm({
       if (amount !== 0 && !paymentToken.current) {
         const token = await card.current!.tokenize({
           amount: dollars.toFixed(2), currencyCode: 'CAD', intent: 'CHARGE',
+          billingContact: {
+            givenName: String(registration.name).trim(),
+            email: String(registration.email).trim(),
+            ...(String(registration.phone || '').trim() ? { phone: String(registration.phone).trim() } : {}),
+          },
           customerInitiated: true, sellerKeyedIn: false,
         })
         if (token.status !== 'OK' || !token.token) {

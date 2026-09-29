@@ -41,3 +41,7 @@ The browser retains the submission details and identifiers during retries and lo
 Unit/component tests mock Square. The browser suite also exercises both checkout choices on desktop and mobile with mocked Square responses; neither substitutes for these live Sandbox acceptance checks. No live payment or external customer record is created by the automated tests.
 
 References: [Pay for Orders](https://developer.squareup.com/docs/orders-api/pay-for-orders), [Create Customer](https://developer.squareup.com/reference/square/customers-api/create-customer), [Sandbox payments](https://developer.squareup.com/docs/devtools/sandbox/payments).
+
+## Card verification request
+
+Square requires `billingContact` when verification details are passed to `card.tokenize()`. The form sends the entered name, email, and optional phone alongside the CAD amount and charge intent. Omitting the entire object produces `VALIDATION_ERROR` for `verificationDetails.billingContact` before the SDK requests a card token. The desktop/mobile checkout mocks enforce this requirement. See [Square’s card payment flow](https://developer.squareup.com/docs/web-payments/take-card-payment).

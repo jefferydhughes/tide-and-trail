@@ -90,3 +90,21 @@ it('allows correcting details when the server confirms checkout never reached se
   expect((screen.getByLabelText('Name').closest('fieldset') as HTMLFieldSetElement).disabled).toBe(false)
   expect((screen.getByRole('button', { name: 'Not Now' }) as HTMLButtonElement).disabled).toBe(false)
 })
+it('provides the required billingContact to Square before requesting a payment token', async () => {
+  // Square SDK rejects verificationDetails without a billingContact object.
+  tokenize.mockImplementationOnce(async verification => verification.billingContact && typeof verification.billingContact === 'object'
+    ? { status: 'OK', token: 'sandbox-test-token' }
+    : { status: 'Invalid', errors: [{ field: 'verificationDetails.billingContact', type: 'VALIDATION_ERROR' }] })
+  form()
+  fireEvent.change(screen.getByLabelText('Phone (optional)'), { target: { value: '+15065550123' } })
+  await pay()
+  await screen.findByRole('status')
+  expect(tokenize).toHaveBeenCalledWith(expect.objectContaining({
+    amount: '5.00', currencyCode: 'CAD', intent: 'CHARGE',
+    billingContact: { givenName: 'Alex Hiker', email: 'alex@example.ca', phone: '+15065550123' },
+  }))
+})
+it('omits a blank optional phone from billing verification', async () => {
+  form(); await pay(); await screen.findByRole('status')
+  expect(tokenize.mock.calls[0][0].billingContact).toEqual({ givenName: 'Alex Hiker', email: 'alex@example.ca' })
+})

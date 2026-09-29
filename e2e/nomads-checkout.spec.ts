@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test'
 // Square is mocked at the browser boundary. No customer or payment is created.
 test.beforeEach(async ({ page }) => {
   await page.route('https://sandbox.web.squarecdn.com/v1/square.js', route => route.fulfill({
-    contentType: 'application/javascript', body: `window.Square = { payments: () => ({ card: async () => ({ attach: async (element) => { element.textContent = 'Secure test card form'; }, tokenize: async () => ({ status: 'OK', token: 'sandbox-test-token' }), destroy: async () => {} }) }) };`,
+    contentType: 'application/javascript', body: `window.Square = { payments: () => ({ card: async () => ({ attach: async (element) => { element.textContent = 'Secure test card form'; }, tokenize: async (details) => details.billingContact && details.billingContact.email === 'hiker@example.ca' && details.billingContact.givenName === 'Test Hiker' ? ({ status: 'OK', token: 'sandbox-test-token' }) : ({ status: 'Invalid', errors: [{ field: 'verificationDetails.billingContact', type: 'VALIDATION_ERROR' }] }), destroy: async () => {} }) }) };`,
   }))
   await page.route('**/api/nomads/register', route => route.fulfill({ json: { ok: true, orderId: 'test-registration' } }))
   await page.goto('/nomads#register')
